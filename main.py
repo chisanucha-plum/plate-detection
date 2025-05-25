@@ -7,6 +7,7 @@ import numpy as np
 from fastapi import FastAPI
 import uvicorn
 import threading
+import base64
 
 # โหลดโมเดล
 LICENSE_MODEL_DETECTION_DIR = './models/license_plate_detector.pt'
@@ -40,7 +41,7 @@ def correct_plate_characters(text):
 reader = easyocr.Reader(['th', 'en'])
 
 app = FastAPI()
-latest_plate = {"plate": ""}
+latest_plate = {"plate": "", "image": ""}
 
 def detect_plate():
     global latest_plate
@@ -83,7 +84,11 @@ def detect_plate():
                 # ถ้ายังไม่เคยบันทึก หรือเจอเฟรมที่คมชัดกว่าเดิม
                 if (safe_plate_text not in saved_plates) or (sharpness > saved_plates[safe_plate_text][0]):
                     saved_plates[safe_plate_text] = (sharpness, cropped_plate.copy())
-                    latest_plate["plate"] = plate_text  # อัปเดตป้ายล่าสุด
+                    # แปลงภาพเป็น base64
+                    _, buffer = cv2.imencode('.jpg', cropped_plate)
+                    jpg_as_text = base64.b64encode(buffer).decode('utf-8')
+                    latest_plate["plate"] = plate_text
+                    latest_plate["image"] = jpg_as_text
 
                 cv2.putText(frame, plate_text, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX,
                             0.9, (36, 255, 12), 2)

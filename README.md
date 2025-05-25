@@ -1,7 +1,7 @@
 # Plate Project
 
 ระบบตรวจจับและอ่านป้ายทะเบียนรถยนต์แบบ Real-time ด้วย YOLO, EasyOCR และ FastAPI  
-รองรับการส่งข้อมูลป้ายทะเบียนล่าสุดไปยัง Frontend ผ่าน API
+รองรับการส่งข้อมูลป้ายทะเบียนล่าสุดและภาพป้ายทะเบียน (base64) ไปยัง Frontend ผ่าน API
 
 ## คุณสมบัติ
 
@@ -9,7 +9,7 @@
 - อ่านตัวอักษรบนป้ายทะเบียนด้วย EasyOCR
 - แก้ไขคำผิดของจังหวัดและตัวอักษรที่ OCR มักอ่านผิด
 - บันทึกภาพป้ายทะเบียนที่คมชัดที่สุดเท่านั้น
-- ให้บริการ API สำหรับดึงป้ายทะเบียนล่าสุด (เหมาะสำหรับเชื่อมต่อกับ Frontend)
+- ให้บริการ API สำหรับดึงป้ายทะเบียนล่าสุดและภาพ (เหมาะสำหรับเชื่อมต่อกับ Frontend)
 
 ## วิธีติดตั้ง
 
@@ -30,21 +30,31 @@
 2. **เปิดกล้องและเริ่มตรวจจับ**
     - กด `q` เพื่อหยุดการทำงาน
 
-3. **เรียกดูป้ายทะเบียนล่าสุดผ่าน API**
+3. **เรียกดูป้ายทะเบียนล่าสุดและภาพผ่าน API**
     - ไปที่ [http://localhost:8001/plate](http://localhost:8001/plate)
     - จะได้ข้อมูล JSON เช่น
       ```json
-      {"plate": "1กข1234 กรุงเทพฯ"}
+      {
+        "plate": "1กข1234 กรุงเทพฯ",
+        "image": "<base64 string>"
+      }
       ```
 
 ## การนำไปใช้กับ Frontend
 
-Frontend สามารถดึงข้อมูลป้ายทะเบียนล่าสุดได้โดยการเรียก API `/plate`  
+Frontend สามารถดึงข้อมูลป้ายทะเบียนล่าสุดและภาพได้โดยการเรียก API `/plate`  
 ตัวอย่าง (JavaScript):
 ```js
 fetch("http://localhost:8001/plate")
   .then(res => res.json())
-  .then(data => console.log(data.plate));
+  .then(data => {
+    console.log(data.plate);
+    // แสดงภาพ
+    document.getElementById("plate-img").src = "data:image/jpeg;base64," + data.image;
+  });
+```
+```html
+<img id="plate-img" alt="plate image" />
 ```
 
 ## หมายเหตุ
@@ -56,4 +66,4 @@ fetch("http://localhost:8001/plate")
 ---
 
 **ผู้พัฒนา:**  
-- KMUTT Plate Project Team"# License-Plate-Detection" 
+- KMUTT Plate Project Team
