@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+env/
+venv/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+
+# VSCode settings
+.vscode/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Model files and large data
+models/
+*.pt
+*.h5
+*.onnx
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Output folders
+plate_detection/
