@@ -8,6 +8,7 @@ from fastapi import FastAPI
 import uvicorn
 import threading
 import base64
+from fastapi.middleware.cors import CORSMiddleware
 
 # โหลดโมเดล
 LICENSE_MODEL_DETECTION_DIR = './models/license_plate_detector.pt'
@@ -41,6 +42,16 @@ def correct_plate_characters(text):
 reader = easyocr.Reader(['th', 'en'])
 
 app = FastAPI()
+
+# เพิ่ม CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # หรือระบุ ["http://localhost:3000"] เพื่อความปลอดภัย
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 latest_plate = {"plate": "", "image": ""}
 
 def detect_plate():
