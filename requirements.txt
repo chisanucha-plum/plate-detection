@@ -1,6 +1,6 @@
+fastapi[standard]
 opencv-python
 easyocr
 ultralytics
-fastapi
 uvicorn
 numpy
