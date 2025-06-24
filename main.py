@@ -17,10 +17,10 @@ app.add_middleware(
 
 app.include_router(router)
 
-plate_service = PlateService(model_path='./models/license_plate_detector.pt')
+plate_service = PlateService(model_path='./train/license_plate_detector.pt')
 
 if __name__ == "__main__":
     t = threading.Thread(target=plate_service.detect_plate)
-    t.daemon = True  # ทำให้ thread นี้เป็น daemon thread
+    t.daemon = True  
     t.start()
     uvicorn.run(app, host="0.0.0.0", port=8001)
