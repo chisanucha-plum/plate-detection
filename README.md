@@ -1,55 +1,55 @@
 # Plate Project
 
-ระบบตรวจจับและอ่านป้ายทะเบียนรถยนต์แบบ Real-time ด้วย YOLO, EasyOCR และ FastAPI  
-รองรับการส่งข้อมูลป้ายทะเบียนล่าสุดและภาพป้ายทะเบียน (base64) ไปยัง Frontend ผ่าน API
+A real-time license plate detection and recognition system using YOLO, EasyOCR, and FastAPI.  
+Supports sending the latest license plate text and plate image (base64) to the frontend via API.
 
-## คุณสมบัติ
+## Features
 
-- ตรวจจับป้ายทะเบียนจากกล้องหรือวิดีโอ
-- อ่านตัวอักษรบนป้ายทะเบียนด้วย EasyOCR
-- แก้ไขคำผิดของจังหวัดและตัวอักษรที่ OCR มักอ่านผิด
-- บันทึกภาพป้ายทะเบียนที่คมชัดที่สุดเท่านั้น
-- ให้บริการ API สำหรับดึงป้ายทะเบียนล่าสุดและภาพ (เหมาะสำหรับเชื่อมต่อกับ Frontend)
+- Detect license plates from camera or video files
+- Recognize license plate text using EasyOCR
+- Auto-correct common OCR errors for provinces and characters
+- Save only the sharpest license plate image per detection
+- Provide API endpoints for retrieving the latest license plate and image (for frontend integration)
 
-## วิธีติดตั้ง
+## Installation
 
-1. **ติดตั้ง Python 3.8+**
-2. **ติดตั้งไลบรารีที่จำเป็น**
+1. **Install Python 3.8+**
+2. **Install required libraries**
     ```
     pip install opencv-python easyocr ultralytics fastapi uvicorn numpy
     ```
-3. **ดาวน์โหลดโมเดล YOLO สำหรับตรวจจับป้ายทะเบียน**
-    - วางไฟล์โมเดลไว้ที่ `./models/license_plate_detector.pt`
+3. **Download YOLO model for license plate detection**
+    - Place the model file at `./models/license_plate_detector.pt`
 
-## วิธีใช้งาน
+## Usage
 
-1. **รันโปรแกรม**
+1. **Run the program**
     ```
     python main.py
     ```
-2. **เปิดกล้องและเริ่มตรวจจับ**
-    - กด `q` เพื่อหยุดการทำงาน
+2. **Camera will open and start detection**
+    - Press `q` to stop
 
-3. **เรียกดูป้ายทะเบียนล่าสุดและภาพผ่าน API**
-    - ไปที่ [http://localhost:8001/plate](http://localhost:8001/plate)
-    - จะได้ข้อมูล JSON เช่น
+3. **Get the latest license plate and image via API**
+    - Visit [http://localhost:8001/plate](http://localhost:8001/plate)
+    - You will get a JSON response like:
       ```json
       {
-        "plate": "1กข1234 กรุงเทพฯ",
+        "plate": "1ABC1234 Bangkok",
         "image": "<base64 string>"
       }
       ```
 
-## การนำไปใช้กับ Frontend
+## Frontend Integration
 
-Frontend สามารถดึงข้อมูลป้ายทะเบียนล่าสุดและภาพได้โดยการเรียก API `/plate`  
-ตัวอย่าง (JavaScript):
+Frontend can fetch the latest license plate and image by calling the `/plate` API.  
+Example (JavaScript):
 ```js
 fetch("http://localhost:8001/plate")
   .then(res => res.json())
   .then(data => {
     console.log(data.plate);
-    // แสดงภาพ
+    // Show image
     document.getElementById("plate-img").src = "data:image/jpeg;base64," + data.image;
   });
 ```
@@ -57,13 +57,13 @@ fetch("http://localhost:8001/plate")
 <img id="plate-img" alt="plate image" />
 ```
 
-## หมายเหตุ
+## Notes
 
-- หากต้องการใช้กับไฟล์วิดีโอ ให้เปลี่ยน `cv2.VideoCapture(0)` เป็น path ของไฟล์วิดีโอ
-- หากพอร์ต 8001 ถูกใช้งาน ให้เปลี่ยนเป็นพอร์ตอื่นในไฟล์ `main.py`
-- ตรวจสอบให้แน่ใจว่ากล้องหรือไฟล์วิดีโอพร้อมใช้งาน
+- To use with a video file, change `cv2.VideoCapture(0)` to the path of your video file.
+- If port 8001 is in use, change it in `main.py`.
+- Make sure your camera or video file is available and accessible.
 
 ---
 
-**ผู้พัฒนา:**  
-- KMUTT Plate Project Team
+**Developed by:**  
+- KMUTT
