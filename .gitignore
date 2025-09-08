@@ -43,7 +43,7 @@ htmlcov/
 *.swo
 
 # Data and Models (YOLO specific)
-*.pt  # PyTorch model weights
+# .pt
 *.pth
 *.onnx
 *.weights
@@ -63,7 +63,7 @@ uvicorn.log
 .DS_Store
 Thumbs.db
 models/
-*.pt
+# *.pt
 *.h5
 *.onnx
 
